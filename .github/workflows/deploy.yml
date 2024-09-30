@@ -23,7 +23,9 @@ jobs:
         run: npm install # Install your project dependencies (like Webpack)
 
       - name: Build project
-        run: npm run build # This will run the Webpack build process
+        run: |
+          echo "LLM_API_KEY=${{ secrets.LLM_API_KEY }}" > .env
+          npm run build # This will run the Webpack build process
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3 # Deploy to GitHub Pages
