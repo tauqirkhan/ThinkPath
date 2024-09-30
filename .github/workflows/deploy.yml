@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+# This workflow will run every time you push to the 'main' branch
+on:
+  push:
+    branches:
+      - main # Trigger when changes are pushed to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Use the latest Ubuntu environment
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2 # Check out your source code repository
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16" # Specify Node.js version (adjust if necessary)
+
+      - name: Install dependencies
+        run: npm install # Install your project dependencies (like Webpack)
+
+      - name: Build project
+        run: npm run build # This will run the Webpack build process
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3 # Deploy to GitHub Pages
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Use GitHub's token for authentication
+          publish_dir: ./dist # Folder that contains the built project (adjust if different)
