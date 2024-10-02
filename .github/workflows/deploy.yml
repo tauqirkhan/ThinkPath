@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: "16" # Specify Node.js version (adjust if necessary)
 
+      - name: Install pm2 package
+        run: npm install -g pm2
+
       - name: Install dependencies
         run: npm install # Install your project dependencies (like Webpack)
 
@@ -41,7 +44,7 @@ jobs:
         run: npm install # Install dependencies specific to your backend
 
       - name: Start backend server
-        run: node backend/server.js # Replace with your actual server script
+        run: pm2 start backend/server.js --name "my-backend-server"
 
   deploy:
     runs-on: ubuntu-latest
