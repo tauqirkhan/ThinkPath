@@ -8,7 +8,7 @@ const {
   HarmBlockThreshold,
 } = require("@google/generative-ai");
 
-dotenv.config({ path: "../.env" }); // Load environment variables from .env file
+// dotenv.config({ path: "../.env" }); //Use export LLM_API_KEY=YOUR_API_KEY
 
 const app = express();
 const port = process.env.PORT || 5000;

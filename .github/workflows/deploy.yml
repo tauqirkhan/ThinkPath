@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages and Run Backend
 
 # This workflow will run every time you push to the 'main' branch
 on:
@@ -27,8 +27,29 @@ jobs:
           echo "LLM_API_KEY=${{ secrets.LLM_API_KEY }}" > .env
           npm run build # This will run the Webpack build process
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3 # Deploy to GitHub Pages
+  backend:
+    runs-on: ubuntu-latest
+    needs: build # Ensure backend job runs after build job completes
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Use GitHub's token for authentication
-          publish_dir: ./dist # Folder that contains the built project (adjust if different)
+          node-version: "16" # Adjust if necessary
+
+      - name: Install backend dependencies
+        run: npm install # Install dependencies specific to your backend
+
+      - name: Start backend server
+        run: node backend/server.js # Replace with your actual server script
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: backend # Ensure deploy job runs after backend job completes
+
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
