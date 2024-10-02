@@ -107,5 +107,3 @@ async function run() {
 }
 
 run();
-
-console.log("api key:", apiKey);
